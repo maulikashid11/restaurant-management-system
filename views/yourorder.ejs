@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-violet-200">
+    <header class="p-3 flex items-center justify-between border border-b-zinc-500">
+        <h1 class="logo text-xl font-bold">Restaurant Management System</h1>
+        <div>
+            <button class="confirm bg-green-500 rounded-md p-2">Confirm Order</button>
+            <a href="/orders/orderhistory" class="bg-green-500 rounded-md p-2">Order History</a>
+            <a href="/logout" class="bg-green-500 rounded-md p-2">logout</a>
+        </div>
+    </header>
+    <main class="p-3">
+        <a href="/dashboard" class="text-blue-500 "> Back </a>
+        <h1 class="text-2xl ">Your orders</h1>
+        <div class="orders flex flex-wrap items-center gap-5 mt-3">
+            <% if(userOrderedItem.length> 0){ %>
+                <% userOrderedItem.forEach((item)=>{ %>
+                    <div class="card rounded-md w-[200px] min-h-[300px] overflow-hidden shadow-md">
+                        <img class="h-[150px] w-full object-fill" src="<%= item.image %>" alt="">
+                        <div class="p-2">
+                            <p class="text-md text-zinc-500">
+                                <%= item.name %>
+                            </p>
+                            <p class="text-sm">
+                                <%= item.description %>
+                            </p>
+                            <p class="text-sm">category: <%= item.category %>
+                            </p>
+                            <p class="text-sm">price: $<%= item.price %>
+                            </p>
+                            <p class="text-sm">quantity: <%= item.itemcount %>
+                            </p>
+                            <a href="/orders/removefromorder/<%= item._id %>"
+                                class="bg-green-500 p-1 rounded-md mt-1 inline-block">Remove Item</a>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% }else{ %>
+                            <h1>No Items Added </h1>
+                            <% } %>
+        </div>
+        <div class="modal-container hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-25">
+            <div class="box bg-white relative w-[700px] min-h-[100px] p-3 rounded-md ">
+                <h1 class="text-2xl text-center mb-5">Order</h1>
+                <p class="close absolute top-5 right-5 cursor-pointer">&cross;</p>
+                <div class="heading flex ">
+                    <div class="srno w-[200px]">Sr.No</div>
+                    <div class="name w-full">Name</div>
+                    <div class="price w-full">Price</div>
+                    <div class="quantity w-full">Quantity</div>
+                    <div class="quantity w-full">total</div>
+                </div>
+                <hr>
+                <% userOrderedItem.forEach((item,i)=>{ %>
+                    <div class="item flex items-center justify-between">
+                        <p class="srno w-[200px]">
+                            <%= i+1 %>
+                        </p>
+                        <p class="name w-full">
+                            <%= item.name %>
+                        </p>
+                        <p class="price w-full">$<%= item.price %>
+                        </p>
+                        <p class="quantity w-full">
+                            <%= item.itemcount %>
+                        </p>
+                        <p class="quantity w-full">$<%= item.price*item.itemcount %>
+                        </p>
+                    </div>
+                    <% }) %>
+                        <p>Total : <%= userOrderedItem.reduce((accumulator,item)=>
+                                accumulator+item.price*item.itemcount,0) %></p>
+                        <a href="/orders/confirmorder" class="confirm-order bg-blue-500 p-1 rounded-md mt-3 inline-block">Confirm Order</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        const confirmbtn = document.querySelector('.confirm')
+        const modalContainer = document.querySelector('.modal-container')
+        const close = document.querySelector('.close')
+        confirmbtn.addEventListener('click', (e) => {
+            modalContainer.classList.remove('hidden')
+        })
+        close.addEventListener('click', (e) => {
+            modalContainer.classList.add('hidden')
+        })
+    </script>
+</body>
+
+</html>

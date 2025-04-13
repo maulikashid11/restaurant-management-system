@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-violet-200">
+    <header class="p-3 flex items-center justify-between border border-b-zinc-500">
+        <h1 class="logo text-xl font-bold">Restaurant Management System</h1>
+        <div>
+            <a href="/logout" class="bg-green-500 rounded-md p-2">logout</a>
+        </div>
+    </header>
+    <main class="p-3">
+        <a href="/dashboard" class="text-blue-500 "> Back </a>
+        <h1 class="text-2xl mb-3">Your Order History</h1>
+        <div class="orders-container flex flex-wrap gap-10">
+            <% if(orderHistory.length> 0){ %>
+                <% orderHistory.forEach((item,i)=>{ %>
+                    <div class="order p-4 bg-white rounded-md w-[500px] min-h-[200px]">
+                        <h1 class="text-center text-2xl mb-3">Order <%= i+1 %>
+                        </h1>
+                        <p>OrderId: <%= item.fullOrder._id %>
+                        </p>
+                        <p>Date: <%= item.fullOrder.date.toLocaleString() %></p>
+                        <p>Items:</p>
+                        <div class="my-4">
+                            <div class="heading flex ">
+                                <div class="srno w-[200px]">Sr.No</div>
+                                <div class="name w-[800px]">Name</div>
+                                <div class="price w-full">Price</div>
+                                <div class="quantity w-full">Quantity</div>
+                                <div class="quantity w-[200px]">total</div>
+                            </div>
+                            <hr>
+                            <% item.menuItems.forEach((item,i)=>{ %>
+                                <div class="item flex items-center justify-between">
+                                    <p class="srno w-[200px]">
+                                        <%= i+1 %>
+                                    </p>
+                                    <p class="name w-[800px]">
+                                        <%= item.fullItem.name %>
+                                    </p>
+                                    <p class="price w-full">$<%= item.fullItem.price %>
+                                    </p>
+                                    <p class="quantity w-full">
+                                        <%= item.menuItem.itemcount %>
+                                    </p>
+                                    <p class="quantity w-[200px]">$<%= item.fullItem.price*item.menuItem.itemcount %>
+                                    </p>
+                                </div>
+                                <% }) %>
+                        </div>
+                        <p>Total : <%= item.menuItems.reduce((accumulator,i)=>
+                                accumulator+i.fullItem.price*i.menuItem.itemcount,0) %></p>
+                        <p>Status : Completed</p>
+                    </div>
+                    <% }) %>
+                        <% }else{ %>
+                            <h1>No Orders</h1>
+                            <% } %>
+        </div>
+    </main>
+
+</body>
+
+</html>

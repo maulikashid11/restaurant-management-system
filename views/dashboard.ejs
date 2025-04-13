@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-violet-200">
+    <header class="p-3 flex items-center justify-between border border-b-zinc-500">
+        <h1 class="logo text-xl font-bold">Restaurant Management System</h1>
+        <div>
+            <a href="/orders/yourorder" class="bg-green-500 <%= isPending ? '' : 'hidden'%> rounded-md p-2">Your
+                Orders</a>
+            <a href="/orders/orderhistory" class="bg-green-500 rounded-md p-2">Order History</a>
+            <a href="/logout" class="bg-green-500 rounded-md p-2">Logout</a>
+        </div>
+    </header>
+    <main class="p-3">
+        <h1 class="text-2xl ">Special Menus</h1>
+        <div class="menus flex flex-wrap items-center gap-5 mt-3">
+            <% menus.forEach((menu)=>{ %>
+                <div class="card rounded-md w-[200px] min-h-[300px] overflow-hidden shadow-md">
+                    <img class="h-[150px] w-full object-fill" src="<%= menu.image %>" alt="">
+                    <div class="p-2">
+                        <p class="text-md text-zinc-500">
+                            <%= menu.name %>
+                        </p>
+                        <p class="text-sm">
+                            <%= menu.description %>
+                        </p>
+                        <p class="text-sm">category: <%= menu.category %>
+                        </p>
+                        <p class="text-sm">price: $<%= menu.price %>
+                        </p>
+                        <a href="/orders/addtoorder/<%= menu._id %>"
+                            class="bg-green-500 p-1 rounded-md mt-1 inline-block">Add Item</a>
+                    </div>
+                </div>
+                <% })%>
+        </div>
+    </main>
+</body>
+
+</html>
